@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Entry, Button, OptionMenu, StringVar, Canvas, messagebox
+from tkinter import Frame, Label, Entry, Button, OptionMenu, StringVar, messagebox
 from datetime import datetime, timedelta
 
 class ActivityWidgets:
@@ -25,6 +25,17 @@ class ActivityWidgets:
         self.start_today_button = Button(self.frame, text="Today", command=self.set_start_date_today)
         self.start_today_button.grid(row=2, column=3)
 
+        self.add_start_30min_button = Button(self.frame, text="+30 Min", command=lambda: self.increment_start_time(30))
+        self.add_start_30min_button.grid(row=2, column=4)
+        self.add_start_1hr_button = Button(self.frame, text="+1 Hr", command=lambda: self.increment_start_time(60))
+        self.add_start_1hr_button.grid(row=2, column=5)
+        self.add_start_2hr_button = Button(self.frame, text="+2 Hr", command=lambda: self.increment_start_time(120))
+        self.add_start_2hr_button.grid(row=2, column=6)
+        self.add_start_4hr_button = Button(self.frame, text="+4 Hr", command=lambda: self.increment_start_time(240))
+        self.add_start_4hr_button.grid(row=2, column=7)
+        self.add_start_1day_button = Button(self.frame, text="+1 Day", command=lambda: self.increment_start_time(1440))
+        self.add_start_1day_button.grid(row=2, column=8)
+
         self.end_label = Label(self.frame, text="End Time")
         self.end_label.grid(row=3, column=0)
         self.end_entry = Entry(self.frame)
@@ -34,16 +45,16 @@ class ActivityWidgets:
         self.end_today_button = Button(self.frame, text="Today", command=self.set_end_date_today)
         self.end_today_button.grid(row=3, column=3)
 
-        self.add_30min_button = Button(self.frame, text="+30 Min", command=lambda: self.increment_end_time_from_start(30))
-        self.add_30min_button.grid(row=3, column=4)
-        self.add_1hr_button = Button(self.frame, text="+1 Hr", command=lambda: self.increment_end_time_from_start(60))
-        self.add_1hr_button.grid(row=3, column=5)
-        self.add_2hr_button = Button(self.frame, text="+2 Hr", command=lambda: self.increment_end_time_from_start(120))
-        self.add_2hr_button.grid(row=3, column=6)
-        self.add_4hr_button = Button(self.frame, text="+4 Hr", command=lambda: self.increment_end_time_from_start(240))
-        self.add_4hr_button.grid(row=3, column=7)
-        self.add_1day_button = Button(self.frame, text="+1 Day", command=lambda: self.increment_end_time_from_start(1440))
-        self.add_1day_button.grid(row=3, column=8)
+        self.add_end_30min_button = Button(self.frame, text="+30 Min", command=lambda: self.increment_end_time_from_start(30))
+        self.add_end_30min_button.grid(row=3, column=4)
+        self.add_end_1hr_button = Button(self.frame, text="+1 Hr", command=lambda: self.increment_end_time_from_start(60))
+        self.add_end_1hr_button.grid(row=3, column=5)
+        self.add_end_2hr_button = Button(self.frame, text="+2 Hr", command=lambda: self.increment_end_time_from_start(120))
+        self.add_end_2hr_button.grid(row=3, column=6)
+        self.add_end_4hr_button = Button(self.frame, text="+4 Hr", command=lambda: self.increment_end_time_from_start(240))
+        self.add_end_4hr_button.grid(row=3, column=7)
+        self.add_end_1day_button = Button(self.frame, text="+1 Day", command=lambda: self.increment_end_time_from_start(1440))
+        self.add_end_1day_button.grid(row=3, column=8)
 
         self.reward_label = Label(self.frame, text="Reward")
         self.reward_label.grid(row=4, column=0)
@@ -112,6 +123,21 @@ class ActivityWidgets:
         self.end_entry.delete(0, 'end')
         self.end_entry.insert(0, today + " 23:59")
 
+    def increment_start_time(self, minutes):
+        start_time_str = self.start_entry.get()
+        if start_time_str:
+            try:
+                start_time = datetime.strptime(start_time_str, '%Y-%m-%d %H:%M')
+            except ValueError:
+                messagebox.showerror("Error", "Invalid date format in start time. Please use YYYY-MM-DD HH:MM")
+                return
+        else:
+            start_time = datetime.now()
+
+        new_start_time = start_time + timedelta(minutes=minutes)
+        self.start_entry.delete(0, 'end')
+        self.start_entry.insert(0, new_start_time.strftime('%Y-%m-%d %H:%M'))
+
     def increment_end_time_from_start(self, minutes):
         start_time_str = self.start_entry.get()
         if start_time_str:
@@ -123,7 +149,10 @@ class ActivityWidgets:
             except ValueError:
                 messagebox.showerror("Error", "Invalid date format in start time. Please use YYYY-MM-DD HH:MM")
         else:
-            messagebox.showerror("Error", "Start time must be set before incrementing end time")
+            start_time = datetime.now()
+            new_end_time = start_time + timedelta(minutes=minutes)
+            self.end_entry.delete(0, 'end')
+            self.end_entry.insert(0, new_end_time.strftime('%Y-%m-%d %H:%M'))
 
     # Method to clear form entries
     def clear_entries(self):
