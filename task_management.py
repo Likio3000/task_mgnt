@@ -2,6 +2,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from datetime import datetime
 import pygame
+import os
 from database import delete_activity_from_db, get_activities_from_db
 from utils import generate_random_color
 

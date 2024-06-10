@@ -4,9 +4,8 @@ import random
 from datetime import datetime
 import pygame
 
-PROGRESS_FILE = 'progress.json'
-TOTAL_HOURS = 10000
-DAILY_GOAL_HOURS = 8
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROGRESS_FILE = os.path.join(BASE_DIR, 'progress.json')
 
 # Initialize Pygame Mixer
 pygame.mixer.init()

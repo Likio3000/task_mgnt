@@ -15,5 +15,5 @@ def scrape_files_to_clipboard(directory):
     print("Project contents copied to clipboard.")
 
 if __name__ == "__main__":
-    target_directory = os.path.join(os.getcwd(), 'version1')
+    target_directory = os.getcwd()  # Use the current working directory
     scrape_files_to_clipboard(target_directory)

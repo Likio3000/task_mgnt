@@ -1,7 +1,9 @@
 import sqlite3
 import logging
+import os
 
-DATABASE_NAME = 'schedule.db'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE_NAME = os.path.join(BASE_DIR, 'schedule.db')
 
 def connect_db():
     return sqlite3.connect(DATABASE_NAME)

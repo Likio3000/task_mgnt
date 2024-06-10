@@ -1,15 +1,17 @@
 from tkinter import Tk, BooleanVar, Checkbutton, StringVar, OptionMenu, messagebox
 from datetime import datetime, timedelta
 import pygame
+import os
 from database import create_tables, add_activity_to_db
 from utils import load_progress, save_progress, calculate_hours, play_sound
 from activity_widgets import ActivityWidgets
 from progress_widgets import ProgressWidgets
 from task_management import TaskManagement
 
-# Constants
-SOUND_FILE = 'sound1.mp3'
-ERROR_SOUND_FILE = 'error_sound.mp3'
+# Constants for sound files
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SOUND_FILE = os.path.join(BASE_DIR, 'sound1.mp3')
+ERROR_SOUND_FILE = os.path.join(BASE_DIR, 'error_sound.mp3')
 TOTAL_HOURS = 10000
 DAILY_GOAL_HOURS = 8
 
