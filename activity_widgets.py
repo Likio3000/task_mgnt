@@ -79,10 +79,10 @@ class ActivityWidgets:
 
     # Predefined task methods with color
     def set_coding_session(self):
-        self.set_task("Coding Session", "A basic coding session", timedelta(minutes=55), color='lightblue')
+        self.set_task("Coding Session", "A basic coding session", timedelta(minutes=55), "Medium", color='lightblue')
 
     def set_break(self):
-        self.set_task("Break", "A small break from coding", timedelta(minutes=5), color='lightgreen')
+        self.set_task("Break", "A small break from coding", timedelta(minutes=5),"Medium", color='lightgreen')
 
     def set_scheduling(self):
         self.set_task("Scheduling", "A scheduling session", timedelta(minutes=10), "High", color='lightcoral')
