@@ -16,6 +16,11 @@ class ProgressWidgets:
         self.daily_progress_label = Label(parent, text=f"{self.progress['daily_completed_hours']} / 8")
         self.daily_progress_label.pack(pady=5)
 
+        # New section for completed tasks
+        Label(parent, text="COMPLETED TASKS").pack(pady=5)
+        self.completed_tasks_label = Label(parent, text=f"Total Completed Tasks: {self.progress['completed_tasks']}")
+        self.completed_tasks_label.pack(pady=5)
+
         self.update_progress_bars()
 
     def update_progress_bars(self):
@@ -26,3 +31,6 @@ class ProgressWidgets:
         daily_progress_ratio = self.progress['daily_completed_hours'] / 8
         self.daily_progress_bar['value'] = daily_progress_ratio * 100
         self.daily_progress_label.config(text=f"{self.progress['daily_completed_hours']} / 8")
+
+        # Update completed tasks label
+        self.completed_tasks_label.config(text=f"Total Completed Tasks: {self.progress['completed_tasks']}")

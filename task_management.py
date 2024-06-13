@@ -134,3 +134,7 @@ class TaskManagement:
             messagebox.showinfo("Success", "Completed tasks have been deleted successfully!")
         else:
             messagebox.showinfo("Info", "No completed tasks to delete.")
+        self.update_progress_display()
+
+    def update_progress_display(self):
+        self.progress_widgets.update_progress_bars()
