@@ -38,6 +38,7 @@ class SchedulePlannerApp:
         start_time = self.activity_widgets.start_entry.get()
         end_time = self.activity_widgets.end_entry.get()
         reward = self.activity_widgets.reward_var.get()
+        color = getattr(self.activity_widgets, 'color', 'white')  # Get the color
         if title and start_time and end_time:
             try:
                 datetime.strptime(start_time, '%Y-%m-%d %H:%M')

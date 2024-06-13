@@ -81,11 +81,21 @@ class TaskManagement:
             time_left = str(end_time - now).split('.')[0] if end_time > now else "Ended"
 
             task_name = activity[1]
-            if task_name not in self.task_colors:
-                self.task_colors[task_name] = generate_random_color()
+            if task_name == "Coding Session":
+                color = 'lightblue'
+            elif task_name == "Break":
+                color = 'lightgreen'
+            elif task_name == "Scheduling":
+                color = 'lightcoral'
+            elif task_name == "Eating Break":
+                color = 'lightyellow'
+            else:
+                if task_name not in self.task_colors:
+                    self.task_colors[task_name] = generate_random_color()
+                color = self.task_colors[task_name]
 
             self.tree.insert('', 'end', values=(activity[0], activity[1], activity[2], start_time.strftime('%Y-%m-%d %H:%M'), end_time.strftime('%Y-%m-%d %H:%M'), is_active, time_left, activity[5]), tags=(task_name,))
-            self.tree.tag_configure(task_name, background=self.task_colors[task_name])
+            self.tree.tag_configure(task_name, background=color)
 
     def delete_selected(self):
         selected_items = self.tree.selection()

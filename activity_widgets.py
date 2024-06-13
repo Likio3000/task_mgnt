@@ -68,33 +68,27 @@ class ActivityWidgets:
         self.add_button.grid(row=5, column=0, columnspan=2, pady=10)
 
         # Add buttons for predefined tasks with specific colors
-        self.coding_button = Button(self.frame, text="Coding Session", command=lambda: self.set_coding_session(add_activity_callback), bg='lightblue')
+        self.coding_button = Button(self.frame, text="Coding Session", command=self.set_coding_session, bg='lightblue')
         self.coding_button.grid(row=6, column=0, pady=10)
-        self.break_button = Button(self.frame, text="Break", command=lambda: self.set_break(add_activity_callback), bg='lightgreen')
+        self.break_button = Button(self.frame, text="Break", command=self.set_break, bg='lightgreen')
         self.break_button.grid(row=6, column=1, pady=10)
-        self.scheduling_button = Button(self.frame, text="Scheduling", command=lambda: self.set_scheduling(add_activity_callback), bg='lightcoral')
+        self.scheduling_button = Button(self.frame, text="Scheduling", command=self.set_scheduling, bg='lightcoral')
         self.scheduling_button.grid(row=6, column=2, pady=10)
-        self.eating_button = Button(self.frame, text="Eating Break", command=lambda: self.set_eating_break(add_activity_callback), bg='lightyellow')
+        self.eating_button = Button(self.frame, text="Eating Break", command=self.set_eating_break, bg='lightyellow')
         self.eating_button.grid(row=6, column=3, pady=10)
 
-        self.add_custom_task_button()  # Add this line
-
     # Predefined task methods with color
-    def set_coding_session(self, add_activity_callback):
+    def set_coding_session(self):
         self.set_task("Coding Session", "A basic coding session", timedelta(minutes=55), color='lightblue')
-        add_activity_callback()
 
-    def set_break(self, add_activity_callback):
+    def set_break(self):
         self.set_task("Break", "A small break from coding", timedelta(minutes=5), color='lightgreen')
-        add_activity_callback()
 
-    def set_scheduling(self, add_activity_callback):
+    def set_scheduling(self):
         self.set_task("Scheduling", "A scheduling session", timedelta(minutes=10), "High", color='lightcoral')
-        add_activity_callback()
 
-    def set_eating_break(self, add_activity_callback):
+    def set_eating_break(self):
         self.set_task("Eating Break", "A small eating break", timedelta(hours=1), "Low", color='lightyellow')
-        add_activity_callback()
 
     def set_task(self, title, description, duration, reward="Low", color="white"):
         now = datetime.now()
@@ -176,54 +170,3 @@ class ActivityWidgets:
         self.start_entry.delete(0, 'end')
         self.end_entry.delete(0, 'end')
         self.reward_var.set(self.reward_options[0])
-
-    def add_custom_task_button(self):
-        self.custom_button_frame = Frame(self.frame)
-        self.custom_button_frame.grid(row=7, column=0, columnspan=9, pady=10)
-        
-        self.custom_title_label = Label(self.custom_button_frame, text="Custom Task Title")
-        self.custom_title_label.grid(row=0, column=0)
-        self.custom_title_entry = Entry(self.custom_button_frame)
-        self.custom_title_entry.grid(row=0, column=1)
-
-        self.custom_desc_label = Label(self.custom_button_frame, text="Description")
-        self.custom_desc_label.grid(row=0, column=2)
-        self.custom_desc_entry = Entry(self.custom_button_frame)
-        self.custom_desc_entry.grid(row=0, column=3)
-
-        self.custom_duration_label = Label(self.custom_button_frame, text="Duration (mins)")
-        self.custom_duration_label.grid(row=0, column=4)
-        self.custom_duration_entry = Entry(self.custom_button_frame)
-        self.custom_duration_entry.grid(row=0, column=5)
-
-        self.custom_reward_label = Label(self.custom_button_frame, text="Reward")
-        self.custom_reward_label.grid(row=0, column=6)
-        self.custom_reward_var = StringVar()
-        self.custom_reward_var.set(self.reward_options[0])
-        self.custom_reward_menu = OptionMenu(self.custom_button_frame, self.custom_reward_var, *self.reward_options)
-        self.custom_reward_menu.grid(row=0, column=7)
-
-        self.custom_color_label = Label(self.custom_button_frame, text="Color")
-        self.custom_color_label.grid(row=0, column=8)
-        self.custom_color_entry = Entry(self.custom_button_frame)
-        self.custom_color_entry.grid(row=0, column=9)
-
-        self.add_custom_button = Button(self.custom_button_frame, text="Add Custom Task Button", command=self.create_custom_task_button, bg='purple')
-        self.add_custom_button.grid(row=1, column=0, columnspan=10, pady=10)
-
-    def create_custom_task_button(self):
-        title = self.custom_title_entry.get()
-        description = self.custom_desc_entry.get()
-        duration = self.custom_duration_entry.get()
-        reward = self.custom_reward_var.get()
-        color = self.custom_color_entry.get()
-
-        if title and description and duration and reward and color:
-            try:
-                duration = int(duration)
-                new_button = Button(self.frame, text=title, command=lambda: self.set_task(title, description, timedelta(minutes=duration), reward, color), bg=color)
-                new_button.grid(row=8, column=0, pady=10)
-            except ValueError:
-                messagebox.showerror("Error", "Invalid duration value. Please enter an integer.")
-        else:
-            messagebox.showerror("Error", "Please fill in all fields for the custom task.")
