@@ -68,11 +68,10 @@ def update_predefined_task_colors(task_colors):
         "Eating Break": "lightyellow"
     }
 
-    # Update the task colors with predefined ones
-    task_colors.update(predefined_tasks)
-    
-    # Remove colors for tasks that no longer exist
-    task_colors = {task: color for task, color in task_colors.items() if task in predefined_tasks}
+    # Update the task colors with predefined ones if they don't exist
+    for task, color in predefined_tasks.items():
+        if task not in task_colors:
+            task_colors[task] = color
     
     save_task_colors(task_colors)
     return task_colors
