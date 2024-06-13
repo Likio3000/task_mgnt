@@ -22,8 +22,8 @@ class TaskManagement:
         self.tree_scroll = ttk.Scrollbar(self.tree_frame)
         self.tree_scroll.pack(side="right", fill="y")
 
-        self.tree = ttk.Treeview(self.tree_frame, columns=("ID", "Title", "Description", "Start", "End", "Active", "Time Left", "Reward"), show='headings', yscrollcommand=self.tree_scroll.set)
-        self.tree.heading("ID", text="ID")
+        # Remove "ID" from the columns
+        self.tree = ttk.Treeview(self.tree_frame, columns=("Title", "Description", "Start", "End", "Active", "Time Left", "Reward"), show='headings', yscrollcommand=self.tree_scroll.set)
         self.tree.heading("Title", text="Title")
         self.tree.heading("Description", text="Description")
         self.tree.heading("Start", text="Start Time")
@@ -64,7 +64,6 @@ class TaskManagement:
         self.tree["show"] = "headings"
 
     def load_activities(self):
-        current_date = datetime.now().strftime('%Y-%m-%d')
         self.filter_activities("All")
 
     def filter_activities(self, filter_option):
@@ -86,7 +85,8 @@ class TaskManagement:
                 save_task_colors(self.task_colors)
             color = self.task_colors[task_name]
 
-            self.tree.insert('', 'end', values=(activity[0], activity[1], activity[2], start_time.strftime('%Y-%m-%d %H:%M'), end_time.strftime('%Y-%m-%d %H:%M'), is_active, time_left, activity[5]), tags=(task_name,))
+            # Insert values excluding the ID
+            self.tree.insert('', 'end', values=(activity[1], activity[2], start_time.strftime('%Y-%m-%d %H:%M'), end_time.strftime('%Y-%m-%d %H:%M'), is_active, time_left, activity[5]), tags=(task_name,))
             self.tree.tag_configure(task_name, background=color)
 
     def delete_selected(self):
@@ -94,6 +94,7 @@ class TaskManagement:
         if selected_items:
             if messagebox.askyesno("Confirm", f"Are you sure you want to delete {len(selected_items)} tasks?"):
                 for item in selected_items:
+                    # Get the activity ID from the hidden column (values[0])
                     activity_id = self.tree.item(item)['values'][0]
                     delete_activity_from_db(activity_id)
                     self.tree.delete(item)
@@ -107,8 +108,8 @@ class TaskManagement:
         current_year = datetime.now().year
         tasks_to_delete = []
         for item in self.tree.get_children():
-            start_time = self.tree.item(item, 'values')[3]
-            end_time = self.tree.item(item, 'values')[4]
+            start_time = self.tree.item(item, 'values')[2]
+            end_time = self.tree.item(item, 'values')[3]
 
             try:
                 start_dt = datetime.strptime(start_time, '%Y-%m-%d %H:%M')
