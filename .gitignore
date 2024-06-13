@@ -1,1 +1,8 @@
+# Ignore pycache
 __pycache__/
+
+# Ignore progress.json file
+progress.json
+
+# Ignore schedule.db file
+schedule.db
