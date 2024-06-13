@@ -36,8 +36,12 @@ def save_progress(progress):
 
 def load_task_colors():
     if os.path.exists(TASK_COLORS_FILE):
-        with open(TASK_COLORS_FILE, 'r') as file:
-            return json.load(file)
+        try:
+            with open(TASK_COLORS_FILE, 'r') as file:
+                return json.load(file)
+        except json.JSONDecodeError:
+            # If the file is empty or not properly formatted, initialize with an empty dictionary
+            return {}
     return {}
 
 def save_task_colors(task_colors):
@@ -55,3 +59,20 @@ def generate_random_color():
 def play_sound(sound_file):
     pygame.mixer.music.load(sound_file)
     pygame.mixer.music.play()
+
+def update_predefined_task_colors(task_colors):
+    predefined_tasks = {
+        "Coding Session": "lightblue",
+        "Break": "lightgreen",
+        "Scheduling": "lightcoral",
+        "Eating Break": "lightyellow"
+    }
+
+    # Update the task colors with predefined ones
+    task_colors.update(predefined_tasks)
+    
+    # Remove colors for tasks that no longer exist
+    task_colors = {task: color for task, color in task_colors.items() if task in predefined_tasks}
+    
+    save_task_colors(task_colors)
+    return task_colors

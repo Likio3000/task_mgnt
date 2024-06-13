@@ -7,5 +7,5 @@ progress.json
 # Ignore schedule.db file
 schedule.db
 
-# Ignore Task colors Task
+# Ignore task_colors.json file
 task_colors.json 

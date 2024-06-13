@@ -1,5 +1,6 @@
 from tkinter import Frame, Label, Entry, Button, OptionMenu, StringVar, messagebox
 from datetime import datetime, timedelta
+from utils import load_task_colors, update_predefined_task_colors
 
 class ActivityWidgets:
     def __init__(self, parent, add_activity_callback):
@@ -67,28 +68,32 @@ class ActivityWidgets:
         self.add_button = Button(self.frame, text="Add Activity", command=add_activity_callback, bg='red')
         self.add_button.grid(row=5, column=0, columnspan=2, pady=10)
 
+        # Load and update task colors
+        self.task_colors = load_task_colors()
+        self.task_colors = update_predefined_task_colors(self.task_colors)
+
         # Add buttons for predefined tasks with specific colors
-        self.coding_button = Button(self.frame, text="Coding Session", command=self.set_coding_session, bg='lightblue')
+        self.coding_button = Button(self.frame, text="Coding Session", command=self.set_coding_session, bg=self.task_colors["Coding Session"])
         self.coding_button.grid(row=6, column=0, pady=10)
-        self.break_button = Button(self.frame, text="Break", command=self.set_break, bg='lightgreen')
+        self.break_button = Button(self.frame, text="Break", command=self.set_break, bg=self.task_colors["Break"])
         self.break_button.grid(row=6, column=1, pady=10)
-        self.scheduling_button = Button(self.frame, text="Scheduling", command=self.set_scheduling, bg='lightcoral')
+        self.scheduling_button = Button(self.frame, text="Scheduling", command=self.set_scheduling, bg=self.task_colors["Scheduling"])
         self.scheduling_button.grid(row=6, column=2, pady=10)
-        self.eating_button = Button(self.frame, text="Eating Break", command=self.set_eating_break, bg='lightyellow')
+        self.eating_button = Button(self.frame, text="Eating Break", command=self.set_eating_break, bg=self.task_colors["Eating Break"])
         self.eating_button.grid(row=6, column=3, pady=10)
 
     # Predefined task methods with color
     def set_coding_session(self):
-        self.set_task("Coding Session", "A basic coding session", timedelta(minutes=55), "Medium", color='lightblue')
+        self.set_task("Coding Session", "A basic coding session", timedelta(minutes=55), "Medium", color=self.task_colors["Coding Session"])
 
     def set_break(self):
-        self.set_task("Break", "A small break from coding", timedelta(minutes=5),"Medium", color='lightgreen')
+        self.set_task("Break", "A small break from coding", timedelta(minutes=5),"Medium", color=self.task_colors["Break"])
 
     def set_scheduling(self):
-        self.set_task("Scheduling", "A scheduling session", timedelta(minutes=10), "High", color='lightcoral')
+        self.set_task("Scheduling", "A scheduling session", timedelta(minutes=10), "High", color=self.task_colors["Scheduling"])
 
     def set_eating_break(self):
-        self.set_task("Eating Break", "A small eating break", timedelta(hours=1), "Low", color='lightyellow')
+        self.set_task("Eating Break", "A small eating break", timedelta(hours=1), "Low", color=self.task_colors["Eating Break"])
 
     def set_task(self, title, description, duration, reward="Low", color="white"):
         now = datetime.now()
