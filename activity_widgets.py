@@ -67,32 +67,36 @@ class ActivityWidgets:
         self.add_button = Button(self.frame, text="Add Activity", command=add_activity_callback, bg='red')
         self.add_button.grid(row=5, column=0, columnspan=2, pady=10)
 
-        # Add buttons for predefined tasks
-        self.coding_button = Button(self.frame, text="Coding Session", command=self.set_coding_session, bg='lightblue')
+        # Add buttons for predefined tasks with specific colors
+        self.coding_button = Button(self.frame, text="Coding Session", command=lambda: self.set_coding_session(add_activity_callback), bg='lightblue')
         self.coding_button.grid(row=6, column=0, pady=10)
-        self.break_button = Button(self.frame, text="Break", command=self.set_break, bg='lightgreen')
+        self.break_button = Button(self.frame, text="Break", command=lambda: self.set_break(add_activity_callback), bg='lightgreen')
         self.break_button.grid(row=6, column=1, pady=10)
-        self.scheduling_button = Button(self.frame, text="Scheduling", command=self.set_scheduling, bg='lightcoral')
+        self.scheduling_button = Button(self.frame, text="Scheduling", command=lambda: self.set_scheduling(add_activity_callback), bg='lightcoral')
         self.scheduling_button.grid(row=6, column=2, pady=10)
-        self.eating_button = Button(self.frame, text="Eating Break", command=self.set_eating_break, bg='lightyellow')
+        self.eating_button = Button(self.frame, text="Eating Break", command=lambda: self.set_eating_break(add_activity_callback), bg='lightyellow')
         self.eating_button.grid(row=6, column=3, pady=10)
 
         self.add_custom_task_button()  # Add this line
 
-    # Predefined task methods
-    def set_coding_session(self):
-        self.set_task("Coding Session", "A basic coding session", timedelta(minutes=55))
+    # Predefined task methods with color
+    def set_coding_session(self, add_activity_callback):
+        self.set_task("Coding Session", "A basic coding session", timedelta(minutes=55), color='lightblue')
+        add_activity_callback()
 
-    def set_break(self):
-        self.set_task("Break", "A small break from coding", timedelta(minutes=5))
+    def set_break(self, add_activity_callback):
+        self.set_task("Break", "A small break from coding", timedelta(minutes=5), color='lightgreen')
+        add_activity_callback()
 
-    def set_scheduling(self):
-        self.set_task("Scheduling", "A scheduling session", timedelta(minutes=10), "High")
+    def set_scheduling(self, add_activity_callback):
+        self.set_task("Scheduling", "A scheduling session", timedelta(minutes=10), "High", color='lightcoral')
+        add_activity_callback()
 
-    def set_eating_break(self):
-        self.set_task("Eating Break", "A small eating break", timedelta(hours=1), "Low")
+    def set_eating_break(self, add_activity_callback):
+        self.set_task("Eating Break", "A small eating break", timedelta(hours=1), "Low", color='lightyellow')
+        add_activity_callback()
 
-    def set_task(self, title, description, duration, reward="Low"):
+    def set_task(self, title, description, duration, reward="Low", color="white"):
         now = datetime.now()
         self.title_entry.delete(0, 'end')
         self.title_entry.insert(0, title)
@@ -103,6 +107,7 @@ class ActivityWidgets:
         self.end_entry.delete(0, 'end')
         self.end_entry.insert(0, (now + duration).strftime('%Y-%m-%d %H:%M'))
         self.reward_var.set(reward)
+        self.color = color
 
     # Helper methods for setting start and end times
     def set_start_time_now(self):
@@ -216,7 +221,7 @@ class ActivityWidgets:
         if title and description and duration and reward and color:
             try:
                 duration = int(duration)
-                new_button = Button(self.frame, text=title, command=lambda: self.set_task(title, description, timedelta(minutes=duration), reward), bg=color)
+                new_button = Button(self.frame, text=title, command=lambda: self.set_task(title, description, timedelta(minutes=duration), reward, color), bg=color)
                 new_button.grid(row=8, column=0, pady=10)
             except ValueError:
                 messagebox.showerror("Error", "Invalid duration value. Please enter an integer.")
