@@ -1,4 +1,4 @@
-from tkinter import Tk, BooleanVar, Checkbutton, StringVar, OptionMenu, messagebox
+from tkinter import Tk, BooleanVar, Checkbutton, StringVar, OptionMenu, messagebox, ttk
 from datetime import datetime, timedelta
 import pygame
 import os
@@ -26,12 +26,8 @@ class SchedulePlannerApp:
         self.task_management = TaskManagement(self.root, self.progress)
         self.progress_widgets = ProgressWidgets(self.root, self.progress)
 
-        self.filter_var = StringVar()
-        self.filter_var.set("All")
-        self.filter_menu = OptionMenu(self.root, self.filter_var, "All", "Active", command=self.filter_activities)
-        self.filter_menu.pack(pady=10)
-        self.auto_refresh_checkbutton = Checkbutton(self.root, text="Auto Refresh", variable=self.auto_refresh)
-        self.auto_refresh_checkbutton.pack(pady=10)
+        self.button_frame = ttk.Frame(self.root)
+        self.button_frame.pack(pady=10)
 
         self.auto_refresh_check()
         self.schedule_daily_reset()

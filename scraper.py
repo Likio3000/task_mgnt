@@ -42,7 +42,7 @@ def scrape_files_to_clipboard(directory):
     # Add the content of each file
     for dirpath, dirnames, filenames in os.walk(directory):
         # Exclude specified directories
-        dirnames[:] = [d for d in dirnames if d not in ['__pycache__', '.git']]
+        dirnames[:] = [d for d in dirnames if d not in ['__pycache__', '.gitattributes']]
         for filename in filenames:
             if filename.endswith('.py'):
                 file_path = os.path.join(dirpath, filename)

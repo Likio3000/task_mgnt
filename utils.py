@@ -10,15 +10,14 @@ PROGRESS_FILE = os.path.join(BASE_DIR, 'progress.json')
 # Initialize Pygame Mixer
 pygame.mixer.init()
 
-def get_state_file_path(filename: str = 'state.json') -> str:
-    return os.path.join(os.path.expanduser("~"), filename)
-
 def load_progress():
     if os.path.exists(PROGRESS_FILE):
         with open(PROGRESS_FILE, 'r') as file:
             progress = json.load(file)
             if 'daily_completed_hours' not in progress:
                 progress['daily_completed_hours'] = 0
+            if 'completed_tasks' not in progress:
+                progress['completed_tasks'] = 0
             if 'last_updated' not in progress:
                 progress['last_updated'] = datetime.now().strftime('%Y-%m-%d')
             last_updated_date = datetime.strptime(progress['last_updated'], '%Y-%m-%d').date()
@@ -27,7 +26,7 @@ def load_progress():
                 progress['daily_completed_hours'] = 0
                 progress['last_updated'] = current_date.strftime('%Y-%m-%d')
             return progress
-    return {'completed_hours': 0, 'daily_completed_hours': 0, 'last_updated': datetime.now().strftime('%Y-%m-%d')}
+    return {'completed_hours': 0, 'daily_completed_hours': 0, 'completed_tasks': 0, 'last_updated': datetime.now().strftime('%Y-%m-%d')}
 
 def save_progress(progress):
     progress['last_updated'] = datetime.now().strftime('%Y-%m-%d')
