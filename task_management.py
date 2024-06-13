@@ -4,7 +4,7 @@ from datetime import datetime
 import pygame
 import os
 from database import delete_activity_from_db, get_activities_from_db
-from utils import generate_random_color, save_progress
+from utils import generate_random_color, save_progress, load_task_colors, save_task_colors
 
 # Custom messagebox with sound
 def play_sound(sound_file):
@@ -15,12 +15,7 @@ class TaskManagement:
     def __init__(self, parent, progress):
         self.parent = parent
         self.progress = progress
-        self.task_colors = {
-            "Coding Session": "lightblue",
-            "Break": "lightgreen",
-            "Scheduling": "lightcoral",
-            "Eating Break": "lightyellow"
-        }
+        self.task_colors = load_task_colors()
 
         self.tree_frame = ttk.Frame(self.parent)
         self.tree_frame.pack(pady=20)
@@ -86,7 +81,10 @@ class TaskManagement:
             time_left = str(end_time - now).split('.')[0] if end_time > now else "Ended"
 
             task_name = activity[1]
-            color = self.task_colors.get(task_name, generate_random_color())
+            if task_name not in self.task_colors:
+                self.task_colors[task_name] = generate_random_color()
+                save_task_colors(self.task_colors)
+            color = self.task_colors[task_name]
 
             self.tree.insert('', 'end', values=(activity[0], activity[1], activity[2], start_time.strftime('%Y-%m-%d %H:%M'), end_time.strftime('%Y-%m-%d %H:%M'), is_active, time_left, activity[5]), tags=(task_name,))
             self.tree.tag_configure(task_name, background=color)

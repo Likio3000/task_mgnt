@@ -6,6 +6,7 @@ import pygame
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROGRESS_FILE = os.path.join(BASE_DIR, 'progress.json')
+TASK_COLORS_FILE = os.path.join(BASE_DIR, 'task_colors.json')
 
 # Initialize Pygame Mixer
 pygame.mixer.init()
@@ -32,6 +33,16 @@ def save_progress(progress):
     progress['last_updated'] = datetime.now().strftime('%Y-%m-%d')
     with open(PROGRESS_FILE, 'w') as file:
         json.dump(progress, file)
+
+def load_task_colors():
+    if os.path.exists(TASK_COLORS_FILE):
+        with open(TASK_COLORS_FILE, 'r') as file:
+            return json.load(file)
+    return {}
+
+def save_task_colors(task_colors):
+    with open(TASK_COLORS_FILE, 'w') as file:
+        json.dump(task_colors, file)
 
 def calculate_hours(start_time, end_time):
     start_dt = datetime.strptime(start_time, '%Y-%m-%d %H:%M')

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import pygame
 import os
 from database import create_tables, add_activity_to_db
-from utils import load_progress, save_progress, calculate_hours, play_sound
+from utils import load_progress, save_progress, calculate_hours, play_sound, load_task_colors, save_task_colors
 from activity_widgets import ActivityWidgets
 from progress_widgets import ProgressWidgets
 from task_management import TaskManagement
@@ -21,6 +21,7 @@ class SchedulePlannerApp:
         self.root.title("Schedule Planner")
         self.auto_refresh = BooleanVar(value=False)
         self.progress = load_progress()
+        self.task_colors = load_task_colors()
 
         self.activity_widgets = ActivityWidgets(self.root, self.add_activity)
         self.task_management = TaskManagement(self.root, self.progress)
@@ -47,6 +48,11 @@ class SchedulePlannerApp:
                 hours_completed = calculate_hours(start_time, end_time) * {"Low": 1, "Medium": 1.5, "High": 2}[reward]
                 self.progress['completed_hours'] += hours_completed
                 self.progress['daily_completed_hours'] += hours_completed
+
+                if title not in self.task_colors:
+                    self.task_colors[title] = color
+                    save_task_colors(self.task_colors)
+
                 save_progress(self.progress)
                 play_sound(SOUND_FILE)
                 self.progress_widgets.update_progress_bars()
