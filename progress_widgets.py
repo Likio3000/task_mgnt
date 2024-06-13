@@ -4,7 +4,7 @@ class ProgressWidgets:
     def __init__(self, parent, progress):
         self.progress = progress
 
-        Label(parent, text="OVERALL GOAL").pack(pady=5)
+        Label(parent, text="10000 HOURS GOAL").pack(pady=5)
         self.progress_bar = ttk.Progressbar(parent, length=500)
         self.progress_bar.pack(pady=5)
         self.progress_label = Label(parent, text=f"{self.progress['completed_hours']:.2f} / 10000")
@@ -13,7 +13,7 @@ class ProgressWidgets:
         Label(parent, text="DAILY GOAL").pack(pady=5)
         self.daily_progress_bar = ttk.Progressbar(parent, length=500)
         self.daily_progress_bar.pack(pady=5)
-        self.daily_progress_label = Label(parent, text=f"{self.progress['daily_completed_hours']} / 8")
+        self.daily_progress_label = Label(parent, text=f"{self.progress['daily_completed_hours']:.2f} / 8")
         self.daily_progress_label.pack(pady=5)
 
         # New section for completed tasks
